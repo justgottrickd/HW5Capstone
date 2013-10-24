@@ -9,19 +9,19 @@ describe Movie do
 	Movie.should respond_to :create_from_tmdb
 	end
   end
-  describe 'search keyword in tmdb' do
-    it 'should access Tmdb by title keywords from api' do
-      TmdbMovie.should_receive(:find).with(hash_including :title => 'Space Jam')
-      Movie.find_in_tmdb('Inception')
+  describe 'find keyword in the movie database.' do 
+    before :each do
+	test = Movie.new
+	test.stub(:create_from_tmdb)
+	@movie = [double('first'), double('second')]
+	@movie.stub(:find_in_tmdb) {Array}
     end
-    it 'should create an InvalidKeyError when no api present' do
-      Movie.stub(:api_key).and_return('')
-      lambda { Movie.find_in_tmdb('Space Jam') }.should raise_error(Movie::InvalidKeyError)
+
+    it 'array should return from movie model' do
+	@movie.find_in_tmdb.should eq(Array)
     end
-    it 'should create an InvalidKeyError when wrong API present' do
-      TmdbMovie.stub(:find).and_raise(RuntimeError.new("API returned '404'"))
-      Movie.stub(:api_key).and_return('INVALID')
-      lambda { Movie.find_in_tmdb('Space Jam') }.should raise_error(Movie::InvalidKeyError)
+    it 'create from tmdb method should currently contain elements' do		
+	Movie.should respond_to(:create_from_tmdb).with(1).argument
     end
   end
 end

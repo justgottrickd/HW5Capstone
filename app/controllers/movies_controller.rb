@@ -58,7 +58,7 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-def search_tmdb
+def search_tmdb # creates the search box at bottom of screen
     @result_from_search = params[:search_terms]
     if @result_from_search.strip.empty?
       flash[:notice] = "Please enter a valid search term"
@@ -72,7 +72,7 @@ def search_tmdb
     end
   end
 
-  def add_tmdb
+  def add_tmdb # creates the add selection on search_tmdb page
     @movies = params[:tmdb_movies]
     if @movies.nil?
       flash[:notice] = "Please select movies to add."
